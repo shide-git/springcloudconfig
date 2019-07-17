@@ -1,0 +1,26 @@
+server:
+  port: 8765
+
+spring:
+  application:
+    name: service-feign
+  zipkin: ###添加zipkin追踪
+    base-url: http://localhost:9411
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/  #注册中心地址
+  instance:
+    lease-renewal-interval-in-seconds: 30 #续约时间，默认30s，即没30s心跳检测一次
+    lease-expiration-duration-in-seconds: 90 #续约到期事假，默认90s,即90s没有心跳包，则EurekaServer就认为服务挂掉
+
+#开启hystrix, feign默认自带feign, 不需要再导入包，只需要开启即可
+feign:
+  hystrix:
+    enabled: true
+
+ribbon:
+    eureka:
+      enabled: true
+

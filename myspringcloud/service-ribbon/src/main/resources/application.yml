@@ -1,0 +1,23 @@
+server:
+  port: 8764
+
+spring:
+  application:
+    name: service-ribbon
+  zipkin: ###添加zipkin追踪
+    base-url: http://localhost:9411
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/  #注册中心地址
+  instance: ###健康检查
+    lease-renewal-interval-in-seconds: 30 #续约时间，默认30s，即没30s心跳检测一次
+    lease-expiration-duration-in-seconds: 90 #续约到期事假，默认90s,即90s没有心跳包，则EurekaServer就认为服务挂掉
+
+#针对单服务负载均衡配置
+service-hi:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+
+######## Ribbon 可以设置超时时间，但是在设置超时的时候，最好加上重试机制

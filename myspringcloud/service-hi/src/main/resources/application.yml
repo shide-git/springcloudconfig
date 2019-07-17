@@ -1,0 +1,18 @@
+server:
+  port: 8763
+
+spring:
+  application:
+    name: service-hi
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/  #注册中心地址
+    healthcheck:
+      enabled: true #开启健康检查
+  instance:
+    lease-renewal-interval-in-seconds: 30 #续约时间，默认30s，即没30s心跳检测一次
+    lease-expiration-duration-in-seconds: 90 #续约到期事假，默认90s,即90s没有心跳包，则EurekaServer就认为服务挂掉
+
+

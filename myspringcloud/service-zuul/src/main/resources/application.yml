@@ -1,0 +1,39 @@
+server:
+  port: 8766
+
+spring:
+  application:
+    name: service-zuul
+  http: #配置解决中文乱码
+    encoding:
+      charset: GBK
+      enabled: true
+      force: true
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/  #注册中心地址
+  instance:
+    lease-renewal-interval-in-seconds: 30 #续约时间，默认30s，即没30s心跳检测一次
+    lease-expiration-duration-in-seconds: 90 #续约到期事假，默认90s,即90s没有心跳包，则EurekaServer就认为服务挂掉
+
+#zuul路由配置
+zuul:
+  host: #zuul超时配置
+    connect-timeout-millis: 3000
+    socket-timeout-millis: 3000
+  routes:
+    api-a:
+      path: /api-a/**
+      serviceId: service-ribbon
+    api-b:
+      path: /api-b/**
+      serviceId: service-feign
+
+##ribbon时间配置，当触发断路器后如果不添加此配置，那么会出现ZuulException: Forwarding error
+ribbon:
+  ReadTimeout: 3000
+  ConnectTimeout: 3000
+
+
